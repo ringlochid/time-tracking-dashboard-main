@@ -50,21 +50,3 @@ Solution for the [Frontend Mentor](https://www.frontendmentor.io) time-tracking 
 1. Replace the "Previous - Xhrs" copy with contextual labels ("Yesterday", "Last Week", "Last Month").
 2. Add keyboard focus outlines that mirror the hover state for better accessibility.
 3. Experiment with a light/dark toggle that respects `prefers-color-scheme`.
-
-## Running Locally
-
-```bash
-git clone <repo-url>
-cd time-tracking-dashboard-main
-npm install    # optional placeholder if tooling is added later
-npm run dev    # or use any static server, e.g. `npx serve`
-```
-
-Then open `http://localhost:3000` (or the port your dev server uses). VS Code's Live Server extension also works for this static site.
-
-## Author
-
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- GitHub - [@yourusername](https://github.com/yourusername)
-
-Feel free to reach out with suggestions or improvements!
