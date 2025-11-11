@@ -108,7 +108,7 @@ main.cards-base {
     color: white;
 }
 
-.time-option:nth-child(2) {
+.time-option--active {
     color: white;
 }
 

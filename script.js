@@ -1,6 +1,7 @@
 function main(){
     const [dailyButton, weeklyButton, monthlyButton] = document.querySelectorAll(".time-option");
     const cards = Array.from(document.querySelectorAll(".data-card-display"));
+    const timeButtons = [dailyButton, weeklyButton, monthlyButton];
     let dataCache = [];
 
     async function getUserData() {
@@ -18,37 +19,40 @@ function main(){
     }
 
     function updateMessage(period){
+        if (!dataCache.length) return;
         const timeList = getByPeriod(dataCache, period);
         cards.forEach((card, index) => {
+            const timeframe = timeList[index];
+            if (!timeframe) return;
             const currHrs = card.querySelector('h1');
             const prevHrs = card.querySelector('p');
-            currHrs.textContent = `${timeList[index].current}hrs`;
-            prevHrs.textContent = `Previous - ${timeList[index].previous}hrs`;
+            currHrs.textContent = `${timeframe.current}hrs`;
+            prevHrs.textContent = `Previous - ${timeframe.previous}hrs`;
+        });
+    }
+
+    function setActiveButton(activeButton) {
+        timeButtons.forEach((button) => {
+            button.classList.toggle('time-option--active', button === activeButton);
         });
     }
 
     function attachHandlers() {
         dailyButton.addEventListener('click', (event) => {
             event.preventDefault();
-            dailyButton.style.color = 'white';
-            weeklyButton.style.color = 'var(--clr-text-muted)';
-            monthlyButton.style.color = 'var(--clr-text-muted)';
+            setActiveButton(dailyButton);
             updateMessage("daily");
         });
 
         weeklyButton.addEventListener('click', (event) => {
             event.preventDefault();
-            dailyButton.style.color = 'var(--clr-text-muted)';
-            weeklyButton.style.color = 'white';;
-            monthlyButton.style.color = 'var(--clr-text-muted)';
+            setActiveButton(weeklyButton);
             updateMessage("weekly");
         });
 
         monthlyButton.addEventListener('click', (event) => {
             event.preventDefault();
-            dailyButton.style.color = 'var(--clr-text-muted)';
-            weeklyButton.style.color = 'var(--clr-text-muted)';
-            monthlyButton.style.color = 'white';
+            setActiveButton(monthlyButton);
             updateMessage("monthly");
         });
     }
@@ -57,6 +61,7 @@ function main(){
         .then((data) => {
             dataCache = data;
             attachHandlers();
+            setActiveButton(weeklyButton);
             updateMessage("weekly");
         })
         .catch((error) => {
