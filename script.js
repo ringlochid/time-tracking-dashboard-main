@@ -1,74 +1,58 @@
 function main(){
-    const [daily_botton, weekly_botton, monthly_botton] = document.querySelectorAll(".time-option");
-    //const [work_card, play_card, study_card, exercise_card, social_card, care_card] = document.querySelectorAll(".data-card-display");
-    const card_list = Array.from(document.querySelectorAll(".data-card-display"));
+    const [dailyButton, weeklyButton, monthlyButton] = document.querySelectorAll(".time-option");
+    const cards = Array.from(document.querySelectorAll(".data-card-display"));
+    let dataCache = [];
 
-    async function getuserdata() {
-        const r = await fetch('./data.json');
-        if (!r.ok) throw new Error(`http${r.status}`);
-        return r.json();
+    async function getUserData() {
+        const response = await fetch('./data.json');
+        if (!response.ok) throw new Error(`http ${response.status}`);
+        return response.json();
     }
 
     function getByPeriod(data, period) {
-        return data.map(({title = 'Untitled', timeframes = {}}) => {
-            const { current, previous } = timeframes[period];
+        return data.map(({ title = 'Untitled', timeframes = {} }) => {
+            const frame = timeframes[period] || { current: 0, previous: 0 };
+            const { current, previous } = frame;
             return { title, current, previous };
         });
     }
 
-    function updatedMSG(period){
-        let curr_hrs, prev_hrs;
-        const time_list = getByPeriod(data, period);
-        for (let i = 0; i < card_list.length; i++){
-            curr_hrs = card_list[i].querySelector('h1');
-            prev_hrs = card_list[i].querySelector('p');
-            curr_hrs.textContent = `${time_list[i]["current"]}hrs`;
-            prev_hrs.textContent = `Previous - ${time_list[i]["previous"]}hrs`;
-        }
-        return;
+    function updateMessage(period){
+        const timeList = getByPeriod(dataCache, period);
+        cards.forEach((card, index) => {
+            const currHrs = card.querySelector('h1');
+            const prevHrs = card.querySelector('p');
+            currHrs.textContent = `${timeList[index].current}hrs`;
+            prevHrs.textContent = `Previous - ${timeList[index].previous}hrs`;
+        });
     }
 
-    let data;
+    function attachHandlers() {
+        dailyButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            updateMessage("daily");
+        });
 
-    daily_botton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getuserdata()
-            .then((d) => {
-                data = d;
-            })
-            .catch((err) => {
-                console.log('updatefailed', err);
-            })
-            .finally(() => console.log('updated'));
-        updatedMSG("daily");
-    });
+        weeklyButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            updateMessage("weekly");
+        });
 
-    weekly_botton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getuserdata()
-            .then((d) => {
-                data = d;
-            })
-            .catch((err) => {
-                console.log('updatefailed', err);
-            })
-            .finally(() => console.log('updated'));
-        updatedMSG("weekly");
-    });
+        monthlyButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            updateMessage("monthly");
+        });
+    }
 
-    monthly_botton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getuserdata()
-            .then((d) => {
-                data = d;
-            })
-            .catch((err) => {
-                console.log('updatefailed', err);
-            })
-            .finally(() => console.log('updated'));
-        updatedMSG("monthly");
-    })
-
+    getUserData()
+        .then((data) => {
+            dataCache = data;
+            attachHandlers();
+            updateMessage("weekly");
+        })
+        .catch((error) => {
+            console.error('Failed to load data', error);
+        });
 }
 
-document.addEventListener('DOMContentLoaded', main)
+document.addEventListener('DOMContentLoaded', main);
