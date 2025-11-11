@@ -1,0 +1,17 @@
+body{
+    margin: 0px;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+@media (min-width: 600px) {
+    .cards-base{
+        width: min(1200px, 95vw);
+        display: grid;
+        
+    }
+}
+
+.attribution { font-size: 11px; text-align: center; }
+.attribution a { color: hsl(228, 45%, 44%); }
