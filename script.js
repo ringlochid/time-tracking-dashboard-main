@@ -30,16 +30,25 @@ function main(){
     function attachHandlers() {
         dailyButton.addEventListener('click', (event) => {
             event.preventDefault();
+            dailyButton.style.color = 'white';
+            weeklyButton.style.color = 'var(--clr-text-muted)';
+            monthlyButton.style.color = 'var(--clr-text-muted)';
             updateMessage("daily");
         });
 
         weeklyButton.addEventListener('click', (event) => {
             event.preventDefault();
+            dailyButton.style.color = 'var(--clr-text-muted)';
+            weeklyButton.style.color = 'white';;
+            monthlyButton.style.color = 'var(--clr-text-muted)';
             updateMessage("weekly");
         });
 
         monthlyButton.addEventListener('click', (event) => {
             event.preventDefault();
+            dailyButton.style.color = 'var(--clr-text-muted)';
+            weeklyButton.style.color = 'var(--clr-text-muted)';
+            monthlyButton.style.color = 'white';
             updateMessage("monthly");
         });
     }
