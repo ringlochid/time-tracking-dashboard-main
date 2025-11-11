@@ -114,29 +114,34 @@ main.cards-base {
 .data-card {
     border-radius: 20px;
     overflow: hidden;
+    position: relative;
 }
 
 .data-card-theme {
+    position: relative;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
     height: 60px;
     padding-right: 1.5rem;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
 }
 
 .data-card-theme img {
-    width: 60px;
+    position: absolute;
+    top: 0;
+    right: 1.5rem;
 }
 
 .data-card-display {
     background-color: var(--clr-card-bg);
     margin-top: -20px;
-    padding: 1.5rem;
+    padding: 2.5rem 1.75rem 2.75rem;
     border-radius: 18px;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     transition: background-color 0.2s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .data-card-display:hover {
@@ -160,7 +165,12 @@ main.cards-base {
     gap: 1rem;
 }
 
+.data-card-display-lable h2{
+    font-size: medium;
+}
+
 .data-card-display-lable img {
+
     width: 20px;
     height: 5px;
 }
